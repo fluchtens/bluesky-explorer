@@ -9,7 +9,9 @@ import Searches from "./components/Searches.vue";
   <Header />
   <div class="container">
     <Searches />
-    <Posts />
+    <Suspense>
+      <Posts />
+    </Suspense>
     <Export />
   </div>
 </template>
