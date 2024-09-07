@@ -1,31 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
 import { Post } from "../types/post.type";
 import Loader from "./Loader.vue";
 
-const posts = ref<Post[]>([]);
-const loading = ref<boolean>(true);
-
-const fetchPosts = async (): Promise<Post[]> => {
-  try {
-    const response = await fetch("https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=lang%3Afr+&limit=25&sort=top");
-    if (!response.ok) {
-      return [];
-    }
-
-    const data = await response.json();
-    return data.posts;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
-
-onMounted(async () => {
-  const fetchedPosts = await fetchPosts();
-  posts.value = fetchedPosts;
-  loading.value = false;
-});
+const props = defineProps<{
+  posts: Post[];
+  loading: boolean;
+}>();
 </script>
 
 <template>
@@ -33,7 +13,7 @@ onMounted(async () => {
     <h2>Posts</h2>
     <Loader v-if="loading" class="loader" />
     <ul v-else="">
-      <li class="post-card" v-for="(post, index) in posts" :key="index">
+      <li class="post-card" v-for="(post, index) in props.posts" :key="index">
         <div class="header">
           <span class="author">{{ post.author.handle }}</span>
         </div>
