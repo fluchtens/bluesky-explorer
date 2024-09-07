@@ -1,42 +1,45 @@
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import { Post } from "../types/post.type";
+import Loader from "./Loader.vue";
+
+const posts = ref<Post[]>([]);
+const loading = ref<boolean>(true);
+
+const fetchPosts = async (): Promise<Post[]> => {
+  try {
+    const response = await fetch("https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=lang%3Afr+&limit=25&sort=top");
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+    return data.posts;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+onMounted(async () => {
+  const fetchedPosts = await fetchPosts();
+  posts.value = fetchedPosts;
+  loading.value = false;
+});
+</script>
+
 <template>
   <main id="posts">
     <h2>Posts</h2>
-    <ul>
-      <li class="post-card">
-        <div class="header"><span class="author">poptime.space</span></div>
-        <span class="content"
-          >3️⃣ NOVO ATALHOS e CORREÇÃO DE BUGS - Ao apertar a tecla N (desktop) abrir página de criar novo post. - Erro ao rolar packs iniciais
-          (corrigido)</span
-        >
-        <div class="footer">
-          <button><span>Fav</span></button><span>il y a 12 heures</span>
+    <Loader v-if="loading" class="loader" />
+    <ul v-else="">
+      <li class="post-card" v-for="(post, index) in posts" :key="index">
+        <div class="header">
+          <span class="author">{{ post.author.handle }}</span>
         </div>
-      </li>
-      <li class="post-card">
-        <div class="header"><span class="author">seriesbrasil.com.br</span></div>
-        <span class="content"
-          >1 - Trending Topics (Computador) Que saudade, né? O assuntos do momento moveu gerações no Twitter/X e ele está disponível no Bluesky.
-          Usuários da plataforma no computador podem instalar a extensão BetterBluesky clicando aqui e usufruir&nbsp;do&nbsp;recurso.</span
-        >
+        <span class="content">{{ post.record.text }}</span>
         <div class="footer">
-          <button><span>Fav</span></button><span>il y a 2 jours</span>
-        </div>
-      </li>
-      <li class="post-card">
-        <div class="header"><span class="author">novinhofr21.bsky.social</span></div>
-        <span class="content">Quem vem engolir ela toda?</span>
-        <div class="footer">
-          <button><span>Fav</span></button><span>il y a un jour</span>
-        </div>
-      </li>
-      <li class="post-card">
-        <div class="header"><span class="author">seriesbrasil.com.br</span></div>
-        <span class="content"
-          >1.1 - Trending Topics (Celular) Os usuários mobile também têm vez na funcionalidade. O Graysky, disponível na Apple Store e Play Store,
-          dispõe da ferramenta de assuntos do momento com um único problema: TAGs de spam não são&nbsp;controladas.</span
-        >
-        <div class="footer">
-          <button><span>Fav</span></button><span>il y a 2 jours</span>
+          <button><span>Fav</span></button><span>{{ post.record.createdAt }}</span>
         </div>
       </li>
     </ul>
@@ -46,12 +49,13 @@
 <style scoped>
 #posts {
   padding: 1rem;
+  flex: 1;
 }
 
 ul {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
 }
 
@@ -62,7 +66,13 @@ li {
   padding: 0.5rem;
 }
 
+.header {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .content {
+  flex: 1;
   font-weight: 300;
 }
 
