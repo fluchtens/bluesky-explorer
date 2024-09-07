@@ -1,11 +1,30 @@
 <script setup lang="ts">
+function debounce(cb: (value: string) => void, delay: number): (value: string) => void {
+  let timeoutId: ReturnType<typeof setTimeout>;
+
+  return function (value: string): void {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      cb(value);
+    }, delay);
+  };
+}
+
 const emit = defineEmits<{
+  enableLoading: [];
   onSearchChange: [newSearch: string];
 }>();
 
+const debouncedSearch = debounce((value: string) => {
+  emit("onSearchChange", value);
+}, 500);
+
 const handleSearch = (event: Event) => {
+  emit("enableLoading");
   const target = event.target as HTMLInputElement;
-  emit("onSearchChange", target.value);
+  debouncedSearch(target.value);
 };
 </script>
 

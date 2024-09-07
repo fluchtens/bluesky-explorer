@@ -34,15 +34,18 @@ onMounted(async () => {
   loading.value = false;
 });
 
-const handleSearchUpdate = async (newSearch: string) => {
+const enableLoading = () => {
   loading.value = true;
+};
+
+const handleSearchUpdate = async (newSearch: string) => {
   posts.value = await fetchPosts(newSearch);
   loading.value = false;
 };
 </script>
 
 <template>
-  <Header @onSearchChange="handleSearchUpdate" />
+  <Header @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
   <div class="container">
     <Searches />
     <Suspense>
