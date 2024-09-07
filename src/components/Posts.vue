@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { Post } from "../types/post.type";
+import Loader from "./Loader.vue";
+
+const posts = ref<Post[]>([]);
+const loading = ref<boolean>(true);
 
 const fetchPosts = async (): Promise<Post[]> => {
   try {
@@ -17,18 +21,18 @@ const fetchPosts = async (): Promise<Post[]> => {
   }
 };
 
-const posts = ref<Post[]>([]);
-
 onMounted(async () => {
   const fetchedPosts = await fetchPosts();
   posts.value = fetchedPosts;
+  loading.value = false;
 });
 </script>
 
 <template>
   <main id="posts">
     <h2>Posts</h2>
-    <ul>
+    <Loader v-if="loading" class="loader" />
+    <ul v-else="">
       <li class="post-card" v-for="(post, index) in posts" :key="index">
         <div class="header">
           <span class="author">{{ post.author.handle }}</span>
@@ -45,6 +49,7 @@ onMounted(async () => {
 <style scoped>
 #posts {
   padding: 1rem;
+  flex: 1;
 }
 
 ul {
