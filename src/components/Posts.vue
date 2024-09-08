@@ -12,17 +12,20 @@ const props = defineProps<{
   <main id="posts">
     <h2>Posts</h2>
     <Loader v-if="loading" class="loader" />
-    <ul v-else="">
-      <li class="post-card" v-for="(post, index) in props.posts" :key="index">
-        <div class="header">
-          <span class="author">{{ post.author.handle }}</span>
-        </div>
-        <span class="content">{{ post.record.text }}</span>
-        <div class="footer">
-          <button><span>Fav</span></button><span>{{ post.record.createdAt }}</span>
-        </div>
-      </li>
-    </ul>
+    <div v-else>
+      <p v-if="!posts.length">Pas de posts correspondant à la recherche</p>
+      <ul v-else>
+        <li class="post-card" v-for="(post, index) in props.posts" :key="index">
+          <div class="header">
+            <span class="author">{{ post.author.handle }}</span>
+          </div>
+          <span class="content">{{ post.record.text }}</span>
+          <div class="footer">
+            <button><span>Fav</span></button><span>{{ post.record.createdAt }}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
   </main>
 </template>
 
