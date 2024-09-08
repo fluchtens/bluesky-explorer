@@ -4,31 +4,12 @@ import Export from "./components/Export.vue";
 import Header from "./components/Header.vue";
 import Posts from "./components/Posts.vue";
 import Searches from "./components/Searches.vue";
+import { fetchPosts } from "./services/bsky.api";
 import { Post } from "./types/post.type";
 
 const posts = ref<Post[]>([]);
 const loading = ref<boolean>(true);
 const search = ref<string>("");
-
-const fetchPosts = async (search?: string): Promise<Post[]> => {
-  try {
-    let query = "lang:fr";
-    if (search) {
-      query += ` ${search}`;
-    }
-
-    const response = await fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${query}&limit=25&sort=top`);
-    if (!response.ok) {
-      return [];
-    }
-
-    const data = await response.json();
-    return data.posts;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
 
 onMounted(async () => {
   posts.value = await fetchPosts();
