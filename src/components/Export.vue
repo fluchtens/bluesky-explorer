@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import * as XLSX from "xlsx";
 import { Post } from "../types/post.type";
 
 const props = defineProps<{
@@ -14,7 +15,21 @@ const handleReset = () => {
 };
 
 const handleExport = () => {
-  alert(props.favoritePosts.map((post) => post.record.text).join("\n\n"));
+  const exportData = props.favoritePosts.map((post: Post) => ({
+    cid: post.cid,
+    uri: post.uri,
+    author: post.author.handle,
+    createdAt: post.record.createdAt,
+    text: post.record.text,
+    likeCount: post.likeCount,
+    quoteCount: post.quoteCount,
+    replyCount: post.replyCount,
+    repostCount: post.repostCount,
+  }));
+  const worksheet = XLSX.utils.json_to_sheet(exportData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Exported posts");
+  XLSX.writeFile(workbook, "bluesky-export.xlsx");
 };
 </script>
 

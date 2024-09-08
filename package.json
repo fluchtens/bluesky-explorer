@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
