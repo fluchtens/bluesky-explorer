@@ -7,9 +7,9 @@ import Searches from "./components/Searches.vue";
 import { fetchPosts } from "./services/bsky.api";
 import { Post } from "./types/post.type";
 
+const search = ref<string>("");
 const posts = ref<Post[]>([]);
 const loading = ref<boolean>(true);
-const search = ref<string>("");
 
 onMounted(async () => {
   posts.value = await fetchPosts();
@@ -20,10 +20,8 @@ const enableLoading = () => {
   loading.value = true;
 };
 
-const handleSearchUpdate = async (newSearch: string, inputUpdate: boolean = false) => {
-  if (inputUpdate) {
-    search.value = newSearch;
-  }
+const handleSearchUpdate = async (newSearch: string) => {
+  search.value = newSearch;
   posts.value = await fetchPosts(newSearch);
   loading.value = false;
 };
@@ -32,7 +30,7 @@ const handleSearchUpdate = async (newSearch: string, inputUpdate: boolean = fals
 <template>
   <Header :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
   <div class="container">
-    <Searches @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
+    <Searches :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
     <Suspense>
       <Posts :posts="posts" :loading="loading" />
     </Suspense>
