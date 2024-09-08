@@ -2,6 +2,10 @@
 import { ref } from "vue";
 import { Search } from "../types/search.type";
 
+const props = defineProps<{
+  search: string;
+}>();
+
 const searches = ref<Search[]>([
   { name: "Intelligence artificielle", query: "intelligence artificielle" },
   { name: "Véhicules électriques", query: "véhicules électriques" },
@@ -13,12 +17,19 @@ const searches = ref<Search[]>([
 
 const emit = defineEmits<{
   enableLoading: [];
-  onSearchChange: [newSearch: string, inputUpdate: boolean];
+  onSearchChange: [newSearch: string];
 }>();
 
 const handleSearch = (search: Search) => {
   emit("enableLoading");
-  emit("onSearchChange", search.query, true);
+  emit("onSearchChange", search.query);
+};
+
+const handleSaveSearch = () => {
+  const name = prompt("Nom de la recherche");
+  if (name) {
+    searches.value.push({ name: name, query: props.search });
+  }
 };
 </script>
 
@@ -26,7 +37,7 @@ const handleSearch = (search: Search) => {
   <nav id="searches">
     <div>
       <h2>Recherches</h2>
-      <button class="save-btn">+ Enregistrer la recherche</button>
+      <button class="save-btn" @click="handleSaveSearch">+ Enregistrer la recherche</button>
       <ul>
         <li v-for="(search, index) in searches" :key="index">
           <button class="cat-btn" @click="() => handleSearch(search)">{{ search.name }}</button>

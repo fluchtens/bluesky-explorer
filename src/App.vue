@@ -4,31 +4,12 @@ import Export from "./components/Export.vue";
 import Header from "./components/Header.vue";
 import Posts from "./components/Posts.vue";
 import Searches from "./components/Searches.vue";
+import { fetchPosts } from "./services/bsky.api";
 import { Post } from "./types/post.type";
 
+const search = ref<string>("");
 const posts = ref<Post[]>([]);
 const loading = ref<boolean>(true);
-const search = ref<string>("");
-
-const fetchPosts = async (search?: string): Promise<Post[]> => {
-  try {
-    let query = "lang:fr";
-    if (search) {
-      query += ` ${search}`;
-    }
-
-    const response = await fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${query}&limit=25&sort=top`);
-    if (!response.ok) {
-      return [];
-    }
-
-    const data = await response.json();
-    return data.posts;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
 
 onMounted(async () => {
   posts.value = await fetchPosts();
@@ -39,10 +20,8 @@ const enableLoading = () => {
   loading.value = true;
 };
 
-const handleSearchUpdate = async (newSearch: string, inputUpdate: boolean = false) => {
-  if (inputUpdate) {
-    search.value = newSearch;
-  }
+const handleSearchUpdate = async (newSearch: string) => {
+  search.value = newSearch;
   posts.value = await fetchPosts(newSearch);
   loading.value = false;
 };
@@ -51,7 +30,7 @@ const handleSearchUpdate = async (newSearch: string, inputUpdate: boolean = fals
 <template>
   <Header :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
   <div class="container">
-    <Searches @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
+    <Searches :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
     <Suspense>
       <Posts :posts="posts" :loading="loading" />
     </Suspense>
