@@ -12,6 +12,10 @@ function debounce(cb: (value: string) => void, delay: number): (value: string) =
   };
 }
 
+const props = defineProps<{
+  search: string;
+}>();
+
 const emit = defineEmits<{
   enableLoading: [];
   onSearchChange: [newSearch: string];
@@ -33,7 +37,7 @@ const handleSearch = (event: Event) => {
     <h1>Bluesky Explorer</h1>
     <div>
       🔎
-      <input type="text" @input="handleSearch" />
+      <input type="text" :value="props.search" @input="handleSearch" />
     </div>
   </header>
 </template>
