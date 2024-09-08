@@ -8,6 +8,7 @@ import { Post } from "./types/post.type";
 
 const posts = ref<Post[]>([]);
 const loading = ref<boolean>(true);
+const search = ref<string>("");
 
 const fetchPosts = async (search?: string): Promise<Post[]> => {
   try {
@@ -16,7 +17,6 @@ const fetchPosts = async (search?: string): Promise<Post[]> => {
       query += ` ${search}`;
     }
 
-    console.log("q", query);
     const response = await fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${query}&limit=25&sort=top`);
     if (!response.ok) {
       return [];
@@ -39,14 +39,17 @@ const enableLoading = () => {
   loading.value = true;
 };
 
-const handleSearchUpdate = async (newSearch: string) => {
+const handleSearchUpdate = async (newSearch: string, inputUpdate: boolean = false) => {
+  if (inputUpdate) {
+    search.value = newSearch;
+  }
   posts.value = await fetchPosts(newSearch);
   loading.value = false;
 };
 </script>
 
 <template>
-  <Header @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
+  <Header :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
   <div class="container">
     <Searches @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
     <Suspense>

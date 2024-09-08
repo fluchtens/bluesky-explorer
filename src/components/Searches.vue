@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
-type Search = {
-  name: string;
-  query: string;
-};
+import { Search } from "../types/search.type";
 
 const searches = ref<Search[]>([
   { name: "Intelligence artificielle", query: "intelligence artificielle" },
   { name: "Véhicules électriques", query: "véhicules électriques" },
-  { name: "Kylian Mbappé", query: "Kylian Mbappé Real Madrid" },
+  { name: "Kylian Mbappé Real", query: "Kylian Mbappé Real Madrid" },
   { name: "Taxe carbone", query: "taxe carbone" },
   { name: "JO 2024", query: "jo 2024" },
   { name: "Réforme travail", query: "Réforme travail" },
@@ -17,12 +13,12 @@ const searches = ref<Search[]>([
 
 const emit = defineEmits<{
   enableLoading: [];
-  onSearchChange: [newSearch: string];
+  onSearchChange: [newSearch: string, inputUpdate: boolean];
 }>();
 
 const handleSearch = (search: Search) => {
   emit("enableLoading");
-  emit("onSearchChange", search.query);
+  emit("onSearchChange", search.query, true);
 };
 </script>
 
