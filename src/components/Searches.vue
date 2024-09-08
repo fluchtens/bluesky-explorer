@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Search } from "../types/search.type";
 
 const props = defineProps<{
@@ -28,9 +28,26 @@ const handleSearch = (search: Search) => {
 const handleSaveSearch = () => {
   const name = prompt("Nom de la recherche");
   if (name) {
-    searches.value.push({ name: name, query: props.search });
+    const search: Search = { name: name, query: props.search };
+    searches.value.push(search);
+
+    const existingSearches = localStorage.getItem("searches");
+    let newSearchesArray: Search[] = [];
+    if (existingSearches) {
+      newSearchesArray = JSON.parse(existingSearches);
+    }
+    newSearchesArray.push(search);
+    localStorage.setItem("searches", JSON.stringify(newSearchesArray));
   }
 };
+
+onMounted(() => {
+  const searchesStorage = localStorage.getItem("searches");
+  if (searchesStorage) {
+    const savedSearches: Search[] = JSON.parse(searchesStorage);
+    searches.value = [...searches.value, ...savedSearches];
+  }
+});
 </script>
 
 <template>
