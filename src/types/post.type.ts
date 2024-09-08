@@ -1,5 +1,6 @@
 type Author = {
   handle: string;
+  avatar: string;
 };
 
 type Record = {
@@ -8,7 +9,12 @@ type Record = {
 };
 
 export type Post = {
-  author: Author;
   cid: string;
+  uri: string;
+  author: Author;
   record: Record;
+  likeCount: number;
+  quoteCount: number;
+  replyCount: number;
+  repostCount: number;
 };
