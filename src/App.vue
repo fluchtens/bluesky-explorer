@@ -35,6 +35,10 @@ const handleFavoritePost = (post: Post) => {
     favoritePosts.value.push(post);
   }
 };
+
+const resetFavorites = () => {
+  favoritePosts.value = [];
+};
 </script>
 
 <template>
@@ -44,7 +48,7 @@ const handleFavoritePost = (post: Post) => {
     <Suspense>
       <Posts :posts="posts" :loading="loading" @onFavoritePostChange="handleFavoritePost" />
     </Suspense>
-    <Export :favorite-posts="favoritePosts" />
+    <Export :favorite-posts="favoritePosts" @resetFavorites="resetFavorites" />
   </div>
 </template>
 
