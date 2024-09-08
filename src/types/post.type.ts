@@ -9,5 +9,6 @@ type Record = {
 
 export type Post = {
   author: Author;
+  cid: string;
   record: Record;
 };

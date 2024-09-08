@@ -9,6 +9,7 @@ import { Post } from "./types/post.type";
 
 const search = ref<string>("");
 const posts = ref<Post[]>([]);
+const favoritePosts = ref<Post[]>([]);
 const loading = ref<boolean>(true);
 
 onMounted(async () => {
@@ -25,6 +26,19 @@ const handleSearchUpdate = async (newSearch: string) => {
   posts.value = await fetchPosts(newSearch);
   loading.value = false;
 };
+
+const handleFavoritePost = (post: Post) => {
+  const postIndex = favoritePosts.value.findIndex((p) => p.cid === post.cid);
+  if (postIndex !== -1) {
+    favoritePosts.value.splice(postIndex, 1);
+  } else {
+    favoritePosts.value.push(post);
+  }
+};
+
+const resetFavorites = () => {
+  favoritePosts.value = [];
+};
 </script>
 
 <template>
@@ -32,9 +46,9 @@ const handleSearchUpdate = async (newSearch: string) => {
   <div class="container">
     <Searches :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
     <Suspense>
-      <Posts :posts="posts" :loading="loading" />
+      <Posts :posts="posts" :loading="loading" @onFavoritePostChange="handleFavoritePost" />
     </Suspense>
-    <Export />
+    <Export :favorite-posts="favoritePosts" @resetFavorites="resetFavorites" />
   </div>
 </template>
 
