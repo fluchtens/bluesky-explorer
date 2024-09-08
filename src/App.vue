@@ -31,14 +31,40 @@ const handleFavoritePost = (post: Post) => {
   const postIndex = favoritePosts.value.findIndex((p) => p.cid === post.cid);
   if (postIndex !== -1) {
     favoritePosts.value.splice(postIndex, 1);
+
+    const favStorage = localStorage.getItem("favorites");
+    let savedPosts: Post[] = [];
+    if (favStorage) {
+      savedPosts = JSON.parse(favStorage);
+      const localPostIndex = savedPosts.findIndex((p) => p.cid === post.cid);
+      if (localPostIndex !== -1) {
+        savedPosts.splice(localPostIndex, 1);
+        localStorage.setItem("favorites", JSON.stringify(savedPosts));
+      }
+    }
   } else {
     favoritePosts.value.push(post);
+
+    const favStorage = localStorage.getItem("favorites");
+    let savedPosts: Post[] = [];
+    if (favStorage) {
+      savedPosts = JSON.parse(favStorage);
+    }
+    savedPosts.push(post);
+    localStorage.setItem("favorites", JSON.stringify(savedPosts));
   }
 };
 
 const resetFavorites = () => {
   favoritePosts.value = [];
 };
+
+onMounted(() => {
+  const favStorage = localStorage.getItem("favorites");
+  if (favStorage) {
+    favoritePosts.value = JSON.parse(favStorage);
+  }
+});
 </script>
 
 <template>

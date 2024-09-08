@@ -31,20 +31,20 @@ const handleSaveSearch = () => {
     const search: Search = { name: name, query: props.search };
     searches.value.push(search);
 
-    const existingSearches = localStorage.getItem("searches");
-    let newSearchesArray: Search[] = [];
-    if (existingSearches) {
-      newSearchesArray = JSON.parse(existingSearches);
+    const searcheStorage = localStorage.getItem("searches");
+    let savedSearches: Search[] = [];
+    if (searcheStorage) {
+      savedSearches = JSON.parse(searcheStorage);
     }
-    newSearchesArray.push(search);
-    localStorage.setItem("searches", JSON.stringify(newSearchesArray));
+    savedSearches.push(search);
+    localStorage.setItem("searches", JSON.stringify(savedSearches));
   }
 };
 
 onMounted(() => {
-  const searchesStorage = localStorage.getItem("searches");
-  if (searchesStorage) {
-    const savedSearches: Search[] = JSON.parse(searchesStorage);
+  const searcheStorage = localStorage.getItem("searches");
+  if (searcheStorage) {
+    const savedSearches: Search[] = JSON.parse(searcheStorage);
     searches.value = [...searches.value, ...savedSearches];
   }
 });
