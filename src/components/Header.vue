@@ -35,10 +35,7 @@ const handleSearch = (event: Event) => {
 <template>
   <header>
     <h1>Bluesky Explorer</h1>
-    <div>
-      🔎
-      <input type="text" :value="props.search" @input="handleSearch" />
-    </div>
+    <input type="text" placeholder="Search" :value="props.search" @input="handleSearch" />
   </header>
 </template>
 
@@ -52,11 +49,37 @@ header {
 
 h1 {
   font-size: 1.5rem;
+  line-height: 2rem;
   font-weight: 700;
 }
 
 input {
-  width: 40vw;
-  min-width: 300px;
+  all: unset;
+  padding: 4px 12px;
+  max-width: 400px;
+  width: 100%;
+  height: 30px;
+  border-radius: 0.375rem;
+  border: 1px solid var(--border);
+  background-color: transparent;
+  font-size: 0.875rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: color 0.2s;
+}
+
+input::placeholder {
+  color: var(--muted);
+}
+
+input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
 }
 </style>
