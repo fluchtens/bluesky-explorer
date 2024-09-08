@@ -30,11 +30,15 @@ const handleSearch = (event: Event) => {
   const target = event.target as HTMLInputElement;
   debouncedSearch(target.value);
 };
+
+const resetSearch = () => {
+  emit("onSearchChange", "");
+};
 </script>
 
 <template>
   <header>
-    <h1>Bluesky Explorer</h1>
+    <h1 @click="resetSearch">Bluesky Explorer</h1>
     <input type="text" placeholder="Search" :value="props.search" @input="handleSearch" />
   </header>
 </template>
@@ -51,6 +55,7 @@ h1 {
   font-size: 1.5rem;
   line-height: 2rem;
   font-weight: 700;
+  cursor: pointer;
 }
 
 input {
