@@ -6,6 +6,14 @@ const props = defineProps<{
   posts: Post[];
   loading: boolean;
 }>();
+
+const emit = defineEmits<{
+  onFavoritePostChange: [post: Post];
+}>();
+
+const handleFavorite = (post: Post) => {
+  emit("onFavoritePostChange", post);
+};
 </script>
 
 <template>
@@ -21,7 +29,7 @@ const props = defineProps<{
           </div>
           <span class="content">{{ post.record.text }}</span>
           <div class="footer">
-            <button><span>Fav</span></button><span>{{ post.record.createdAt }}</span>
+            <button @click="() => handleFavorite(post)"><span>Fav</span></button><span>{{ post.record.createdAt }}</span>
           </div>
         </li>
       </ul>
