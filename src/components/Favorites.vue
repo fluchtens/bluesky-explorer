@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 import { Post } from "../types/post.type";
 
 const props = defineProps<{
-  favoritePosts: Post[];
+  favorites: Post[];
 }>();
 
 const emit = defineEmits<{
@@ -15,7 +15,7 @@ const handleReset = () => {
 };
 
 const handleExport = () => {
-  const exportData = props.favoritePosts.map((post: Post) => ({
+  const exportData = props.favorites.map((post: Post) => ({
     cid: post.cid,
     uri: post.uri,
     author: post.author.handle,
@@ -36,9 +36,9 @@ const handleExport = () => {
 <template>
   <div id="favs">
     <h2>Export</h2>
-    <p v-if="!props.favoritePosts.length">Pas encore de favoris</p>
+    <p v-if="!props.favorites.length">Pas encore de favoris</p>
     <div v-else>
-      <p>{{ props.favoritePosts.length }} favori(s)</p>
+      <p>{{ props.favorites.length }} favori(s)</p>
       <button @click="handleReset">Réinitialiser</button>
       <button @click="handleExport">Exporter</button>
     </div>
