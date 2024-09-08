@@ -13,7 +13,14 @@ const favorites = ref<Post[]>([]);
 const loading = ref<boolean>(true);
 
 onMounted(async () => {
-  posts.value = await fetchPosts();
+  const params = new URLSearchParams(window.location.search);
+  search.value = params.get("search") || "";
+
+  if (search.value) {
+    posts.value = await fetchPosts(search.value);
+  } else {
+    posts.value = await fetchPosts();
+  }
   loading.value = false;
 
   const storage = localStorage.getItem("favorites");
@@ -27,6 +34,9 @@ const enableLoading = () => {
 };
 
 const handleSearchUpdate = async (newSearch: string) => {
+  const params = new URLSearchParams(window.location.search);
+  params.set("search", newSearch);
+  window.history.pushState({}, "", `${window.location.pathname}?${params}`);
   search.value = newSearch;
   posts.value = await fetchPosts(newSearch);
   loading.value = false;
@@ -76,6 +86,7 @@ const resetFavorites = () => {
 
 <style scoped>
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 180px 1fr 180px;
 }
 </style>
