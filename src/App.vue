@@ -13,9 +13,10 @@ const fetchPosts = async (search?: string): Promise<Post[]> => {
   try {
     let query = "lang:fr";
     if (search) {
-      query += ` "${search}"`;
+      query += ` ${search}`;
     }
 
+    console.log("q", query);
     const response = await fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${query}&limit=25&sort=top`);
     if (!response.ok) {
       return [];
@@ -47,7 +48,7 @@ const handleSearchUpdate = async (newSearch: string) => {
 <template>
   <Header @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
   <div class="container">
-    <Searches />
+    <Searches @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
     <Suspense>
       <Posts :posts="posts" :loading="loading" />
     </Suspense>
