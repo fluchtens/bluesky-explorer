@@ -39,7 +39,7 @@ const resetSearch = () => {
 <template>
   <header>
     <h1 @click="resetSearch">Bluesky Explorer</h1>
-    <input type="text" placeholder="Search" :value="props.search" @input="handleSearch" />
+    <input name="search" type="text" placeholder="Search" :value="props.search" @input="handleSearch" />
   </header>
 </template>
 
