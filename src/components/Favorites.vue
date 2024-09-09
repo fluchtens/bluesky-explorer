@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as XLSX from "xlsx";
 import { Post } from "../types/post.type";
+import Button from "./ui/Button.vue";
 // import { Button } from "./ui/Button.vue";
 
 const props = defineProps<{
@@ -41,8 +42,8 @@ const handleExport = () => {
     <div v-else>
       <p>{{ props.favorites.length }} favori(s)</p>
       <div class="buttons">
-        <button class="reset-btn" @click="handleReset">Réinitialiser</button>
-        <button class="export-btn" @click="handleExport">Exporter</button>
+        <Button theme="primary" :click="handleReset">Réinitialiser</Button>
+        <Button theme="ghost" :click="handleExport">Exporter</Button>
       </div>
     </div>
   </div>
@@ -59,39 +60,5 @@ const handleExport = () => {
   flex-direction: column;
   display: flex;
   gap: 0.25rem;
-}
-
-button {
-  all: unset;
-  box-sizing: border-box;
-  padding: 1rem 0.5rem;
-  height: 1.125rem;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  white-space: nowrap;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-}
-
-button:focus-visible {
-  box-shadow: 0 0 0 1px hsl(var(--ring));
-}
-
-.reset-btn:hover {
-  background-color: hsl(var(--muted));
-}
-
-.export-btn {
-  background-color: hsl(var(--primary));
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.export-btn:hover {
-  background-color: hsl(var(--primary), 0.8);
 }
 </style>

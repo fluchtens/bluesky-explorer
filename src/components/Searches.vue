@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { Search } from "../types/search.type";
+import Button from "./ui/Button.vue";
 
 const props = defineProps<{
   search: string;
@@ -54,10 +55,10 @@ onMounted(() => {
   <nav id="searches">
     <div>
       <h2>Recherches</h2>
-      <button class="save-btn" @click="handleSaveSearch">Enregistrer</button>
+      <Button theme="primary" :click="handleSaveSearch">Enregistrer</Button>
       <ul>
         <li v-for="(search, index) in searches" :key="index">
-          <button class="cat-btn" @click="() => handleSearch(search)">{{ search.name }}</button>
+          <Button class="cat-btn" theme="ghost" :click="() => handleSearch(search)">{{ search.name }}</Button>
         </li>
       </ul>
     </div>
@@ -65,7 +66,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-nav {
+#searches {
   padding: 1rem;
   grid-area: searches;
 }
@@ -74,36 +75,6 @@ div {
   flex-direction: column;
   display: flex;
   gap: 0.5rem;
-}
-
-button {
-  all: unset;
-  box-sizing: border-box;
-  padding: 1rem 0.5rem;
-  height: 1.125rem;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  white-space: nowrap;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-}
-
-button:focus-visible {
-  box-shadow: 0 0 0 1px hsl(var(--ring));
-}
-
-.save-btn {
-  background-color: hsl(var(--primary));
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.save-btn:hover {
-  background-color: hsl(var(--primary), 0.8);
 }
 
 ul {
@@ -116,10 +87,5 @@ ul {
 .cat-btn {
   justify-content: start;
   font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.cat-btn:hover {
-  background-color: hsl(var(--muted));
 }
 </style>
