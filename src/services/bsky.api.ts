@@ -19,7 +19,6 @@ const fetchPosts = async (search?: string, cursor?: string): Promise<PostRespons
     if (cursor) {
       url.searchParams.append("cursor", cursor);
     }
-    console.log(url.toString());
 
     const response = await fetch(url.toString());
     if (!response.ok) {

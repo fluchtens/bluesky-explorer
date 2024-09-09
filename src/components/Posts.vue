@@ -33,7 +33,6 @@ const isFavorite = (post: Post) => {
 };
 
 const handleScroll = () => {
-  console.log("scroll");
   const bottom = document.documentElement.scrollHeight === window.innerHeight + window.scrollY;
   if (bottom) {
     emit("onPageChange");
@@ -41,12 +40,10 @@ const handleScroll = () => {
 };
 
 onMounted(() => {
-  console.log("mounted");
   window.addEventListener("scroll", handleScroll);
 });
 
 onUnmounted(() => {
-  console.log("unmounted");
   window.removeEventListener("scroll", handleScroll);
 });
 </script>
