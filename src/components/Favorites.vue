@@ -58,7 +58,7 @@ const handleExport = () => {
   margin-top: 0.5rem;
   flex-direction: column;
   display: flex;
-  gap: 0.2rem;
+  gap: 0.25rem;
 }
 
 button {
@@ -76,6 +76,10 @@ button {
   white-space: nowrap;
   transition: background-color 0.3s ease;
   cursor: pointer;
+}
+
+button:focus-visible {
+  box-shadow: 0 0 0 1px hsl(var(--ring));
 }
 
 .reset-btn:hover {

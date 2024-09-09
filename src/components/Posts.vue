@@ -104,6 +104,11 @@ li {
   text-underline-offset: 4px;
 }
 
+.header a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .content {
   flex: 1;
   font-weight: 300;
@@ -131,6 +136,10 @@ li {
 
 .footer button:hover {
   opacity: 0.8;
+}
+
+.footer button:focus-visible {
+  box-shadow: 0 0 0 1px hsl(var(--ring));
 }
 
 .footer button img {

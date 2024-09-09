@@ -93,6 +93,10 @@ button {
   cursor: pointer;
 }
 
+button:focus-visible {
+  box-shadow: 0 0 0 1px hsl(var(--ring));
+}
+
 .save-btn {
   background-color: hsl(var(--primary));
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
