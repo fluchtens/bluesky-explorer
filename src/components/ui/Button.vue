@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   theme: "primary" | "ghost";
-  click: () => void;
+  click?: () => void;
 }>();
 </script>
 
