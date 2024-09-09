@@ -45,7 +45,7 @@ const isFavorite = (post: Post) => {
           <p class="content">{{ post.record.text }}</p>
           <div class="footer">
             <button @click="() => handleFavorite(post)">
-              <img :src="!isFavorite(post) ? '/like.svg' : '/unlike.svg'" alt="Like" />
+              <img :src="!isFavorite(post) ? '/fav.png' : '/unfav.png'" alt="Like" />
             </button>
             <span>{{ getRelativeDate(post.record.createdAt) }}</span>
           </div>
