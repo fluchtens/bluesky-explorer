@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import dayjs from "dayjs";
+import locale from "dayjs/locale/fr";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { Post } from "../types/post.type";
 import Loader from "./Loader.vue";
+
+dayjs.extend(relativeTime);
+dayjs.locale(locale);
 
 const props = defineProps<{
   posts: Post[];
@@ -13,6 +19,10 @@ const emit = defineEmits<{
 
 const handleFavorite = (post: Post) => {
   emit("onFavoritePostChange", post);
+};
+
+const getRelativeDate = (date: string) => {
+  return dayjs().to(dayjs(date));
 };
 </script>
 
@@ -29,7 +39,10 @@ const handleFavorite = (post: Post) => {
           </div>
           <span class="content">{{ post.record.text }}</span>
           <div class="footer">
-            <button @click="() => handleFavorite(post)"><span>Fav</span></button><span>{{ post.record.createdAt }}</span>
+            <button @click="() => handleFavorite(post)">
+              <span>Fav</span>
+            </button>
+            <span>{{ getRelativeDate(post.record.createdAt) }}</span>
           </div>
         </li>
       </ul>
