@@ -35,7 +35,7 @@ const saveSearch = (name: string, query: string) => {
   localStorage.setItem("searches", JSON.stringify(savedSearches));
 };
 
-const handleSearch = (search: Search) => {
+const updateSearch = (search: Search) => {
   emit("enableLoading");
   emit("onSearchChange", search.query);
 };
@@ -56,7 +56,7 @@ onMounted(() => {
       <Button theme="primary" :click="toggleDialog">Enregistrer</Button>
       <ul>
         <li v-for="(search, index) in searches" :key="index">
-          <Button class="cat-btn" theme="ghost" :click="() => handleSearch(search)">{{ search.name }}</Button>
+          <Button class="cat-btn" theme="ghost" :click="() => updateSearch(search)">{{ search.name }}</Button>
         </li>
       </ul>
     </div>
