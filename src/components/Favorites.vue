@@ -70,7 +70,6 @@ button {
   justify-content: center;
   align-items: center;
   border-radius: 0.375rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
