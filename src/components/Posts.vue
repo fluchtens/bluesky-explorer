@@ -4,7 +4,7 @@ import locale from "dayjs/locale/fr";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { onMounted, onUnmounted } from "vue";
 import { Post } from "../types/post.type";
-import Loader from "./Loader.vue";
+import Loader from "./ui/Loader.vue";
 
 dayjs.extend(relativeTime);
 dayjs.locale(locale);
