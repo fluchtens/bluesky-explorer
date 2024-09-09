@@ -1,21 +1,37 @@
 import { Post } from "../types/post.type";
 
-export const fetchPosts = async (search?: string): Promise<Post[]> => {
+type PostResponse = {
+  posts: Post[];
+  cursor: string;
+};
+
+const fetchPosts = async (search?: string, cursor?: string): Promise<PostResponse | null> => {
   try {
     let query = "lang:fr";
     if (search) {
       query += ` ${search}`;
     }
 
-    const response = await fetch(`https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${query}&limit=25&sort=top`);
+    const url = new URL("https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts");
+    url.searchParams.append("q", query);
+    url.searchParams.append("limit", "30");
+    url.searchParams.append("sort", "top");
+    if (cursor) {
+      url.searchParams.append("cursor", cursor);
+    }
+    console.log(url.toString());
+
+    const response = await fetch(url.toString());
     if (!response.ok) {
-      return [];
+      return null;
     }
 
     const data = await response.json();
-    return data.posts;
+    return data;
   } catch (error) {
     console.error(error);
-    return [];
+    return null;
   }
 };
+
+export { fetchPosts };

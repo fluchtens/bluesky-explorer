@@ -2,6 +2,7 @@
 import dayjs from "dayjs";
 import locale from "dayjs/locale/fr";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { onMounted, onUnmounted } from "vue";
 import { Post } from "../types/post.type";
 import Loader from "./Loader.vue";
 
@@ -16,6 +17,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   onFavoritePostChange: [post: Post];
+  onPageChange: [];
 }>();
 
 const handleFavorite = (post: Post) => {
@@ -29,6 +31,24 @@ const getRelativeDate = (date: string) => {
 const isFavorite = (post: Post) => {
   return props.favorites.some((p) => p.cid === post.cid);
 };
+
+const handleScroll = () => {
+  console.log("scroll");
+  const bottom = document.documentElement.scrollHeight === window.innerHeight + window.scrollY;
+  if (bottom) {
+    emit("onPageChange");
+  }
+};
+
+onMounted(() => {
+  console.log("mounted");
+  window.addEventListener("scroll", handleScroll);
+});
+
+onUnmounted(() => {
+  console.log("unmounted");
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>

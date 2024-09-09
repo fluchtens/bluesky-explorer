@@ -9,6 +9,7 @@ import { Post } from "./types/post.type";
 
 const search = ref<string>("");
 const posts = ref<Post[]>([]);
+const cursor = ref<string>("");
 const favorites = ref<Post[]>([]);
 const loading = ref<boolean>(true);
 
@@ -16,10 +17,10 @@ onMounted(async () => {
   const params = new URLSearchParams(window.location.search);
   search.value = params.get("search") || "";
 
-  if (search.value) {
-    posts.value = await fetchPosts(search.value);
-  } else {
-    posts.value = await fetchPosts();
+  const fetchedPosts = await fetchPosts(search.value);
+  if (fetchedPosts) {
+    posts.value = fetchedPosts.posts;
+    cursor.value = fetchedPosts.cursor;
   }
   loading.value = false;
 
@@ -33,12 +34,25 @@ const enableLoading = () => {
   loading.value = true;
 };
 
+const handlePagination = async () => {
+  const fetchedPosts = await fetchPosts(search.value, cursor.value);
+  if (fetchedPosts) {
+    posts.value = [...posts.value, ...fetchedPosts.posts];
+    cursor.value = fetchedPosts.cursor;
+  }
+};
+
 const handleSearchUpdate = async (newSearch: string) => {
   const params = new URLSearchParams(window.location.search);
   params.set("search", newSearch);
   window.history.pushState({}, "", `${window.location.pathname}?${params}`);
   search.value = newSearch;
-  posts.value = await fetchPosts(newSearch);
+  cursor.value = "";
+  const fetchedPosts = await fetchPosts(newSearch);
+  if (fetchedPosts) {
+    posts.value = fetchedPosts.posts;
+    cursor.value = fetchedPosts.cursor;
+  }
   loading.value = false;
 };
 
@@ -78,7 +92,7 @@ const resetFavorites = () => {
   <div class="container">
     <Searches :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
     <Suspense>
-      <Posts :posts="posts" :favorites="favorites" :loading="loading" @onFavoritePostChange="handleFavoritePost" />
+      <Posts :posts="posts" :favorites="favorites" :loading="loading" @onFavoritePostChange="handleFavoritePost" @onPageChange="handlePagination" />
     </Suspense>
     <Favorites :favorites="favorites" @resetFavorites="resetFavorites" />
   </div>
