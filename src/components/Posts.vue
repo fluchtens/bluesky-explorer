@@ -59,6 +59,7 @@ const isFavorite = (post: Post) => {
 #posts {
   padding: 1rem;
   flex: 1;
+  grid-area: posts;
 }
 
 ul {

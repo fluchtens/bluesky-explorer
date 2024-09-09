@@ -78,7 +78,7 @@ input::placeholder {
 
 input:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 1px hsl(var(--ring)) s;
+  box-shadow: 0 0 0 1px hsl(var(--ring));
 }
 
 @media (max-width: 768px) {

@@ -35,7 +35,7 @@ const handleExport = () => {
 </script>
 
 <template>
-  <div id="favs">
+  <div id="favorites">
     <h2>Export</h2>
     <p v-if="!props.favorites.length">Pas encore de favoris</p>
     <div v-else>
@@ -49,8 +49,9 @@ const handleExport = () => {
 </template>
 
 <style scoped>
-#favs {
+#favorites {
   padding: 1rem;
+  grid-area: favorites;
 }
 
 .buttons {

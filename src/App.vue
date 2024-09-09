@@ -77,7 +77,9 @@ const resetFavorites = () => {
   <Header :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
   <div class="container">
     <Searches :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
-    <Suspense> <Posts :posts="posts" :favorites="favorites" :loading="loading" @onFavoritePostChange="handleFavoritePost" /> </Suspense>
+    <Suspense>
+      <Posts :posts="posts" :favorites="favorites" :loading="loading" @onFavoritePostChange="handleFavoritePost" />
+    </Suspense>
     <Favorites :favorites="favorites" @resetFavorites="resetFavorites" />
   </div>
 </template>
@@ -86,5 +88,13 @@ const resetFavorites = () => {
 .container {
   display: grid;
   grid-template-columns: 180px 1fr 180px;
+  grid-template-areas: "searches posts favorites";
+}
+
+@media (max-width: 640px) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-areas: "searches" "favorites" "posts";
+  }
 }
 </style>

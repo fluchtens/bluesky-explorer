@@ -67,6 +67,7 @@ onMounted(() => {
 <style scoped>
 nav {
   padding: 1rem;
+  grid-area: searches;
 }
 
 div {
