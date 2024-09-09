@@ -1,9 +1,10 @@
 :root {
   --background: #14191f;
   --foreground: #ffffffde;
+  --primary: hsl(211, 99%, 56%);
   --muted: #a1a1aa;
   --border: rgba(228, 228, 231, 0.1);
-  --ring: #e4e4e7;
+  --ring: #606084;
 }
 
 :root {

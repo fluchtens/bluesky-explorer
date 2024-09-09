@@ -39,8 +39,10 @@ const handleExport = () => {
     <p v-if="!props.favorites.length">Pas encore de favoris</p>
     <div v-else>
       <p>{{ props.favorites.length }} favori(s)</p>
-      <button @click="handleReset">Réinitialiser</button>
-      <button @click="handleExport">Exporter</button>
+      <div class="buttons">
+        <button class="reset-btn" @click="handleReset">Réinitialiser</button>
+        <button class="export-btn" @click="handleExport">Exporter</button>
+      </div>
     </div>
   </div>
 </template>
@@ -50,12 +52,47 @@ const handleExport = () => {
   padding: 1rem;
 }
 
+.buttons {
+  margin-top: 0.5rem;
+  flex-direction: column;
+  display: flex;
+  gap: 0.2rem;
+}
+
+.buttons .reset-btn:hover {
+  background-color: #a1a1aa;
+}
+
+.buttons .export-btn {
+  background-color: var(--primary);
+}
+
 button {
-  background-color: #208bfe;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
+  all: unset;
+  padding: 0.5rem 1rem;
+  height: 1.125rem;
+  display: flex;
+  align-items: center;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  color: var(--foreground);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  padding: 0.2rem;
+}
+
+button:hover {
+  background-color: rgba(var(--primary), 0.9);
+}
+
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 </style>
