@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as XLSX from "xlsx";
 import { Post } from "../types/post.type";
+// import { Button } from "./ui/Button.vue";
 
 const props = defineProps<{
   favorites: Post[];
@@ -59,40 +60,34 @@ const handleExport = () => {
   gap: 0.2rem;
 }
 
-.buttons .reset-btn:hover {
-  background-color: #a1a1aa;
-}
-
-.buttons .export-btn {
-  background-color: var(--primary);
-}
-
 button {
   all: unset;
-  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+  padding: 1rem 0.5rem;
   height: 1.125rem;
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
   border-radius: 0.375rem;
-  background-color: transparent;
-  color: var(--foreground);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-size: 0.875rem;
   font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: rgba(var(--primary), 0.9);
+.reset-btn:hover {
+  background-color: hsl(var(--muted));
 }
 
-button:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+.export-btn {
+  background-color: hsl(var(--primary));
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-button:disabled {
-  pointer-events: none;
-  opacity: 0.5;
+.export-btn:hover {
+  background-color: hsl(var(--primary), 0.8);
 }
 </style>

@@ -54,7 +54,7 @@ onMounted(() => {
   <nav id="searches">
     <div>
       <h2>Recherches</h2>
-      <button class="save-btn" @click="handleSaveSearch">+ Enregistrer la recherche</button>
+      <button class="save-btn" @click="handleSaveSearch">Enregistrer</button>
       <ul>
         <li v-for="(search, index) in searches" :key="index">
           <button class="cat-btn" @click="() => handleSearch(search)">{{ search.name }}</button>
@@ -75,28 +75,46 @@ div {
   gap: 0.5rem;
 }
 
-.save-btn {
-  padding: 0.2rem;
-  border: none;
-  border-radius: 6px;
-  background: #208bfe;
-  color: #fff;
+button {
+  all: unset;
+  box-sizing: border-box;
+  padding: 1rem 0.5rem;
+  height: 1.125rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
   cursor: pointer;
+}
+
+.save-btn {
+  background-color: hsl(var(--primary));
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.save-btn:hover {
+  background-color: hsl(var(--primary), 0.8);
 }
 
 ul {
   list-style: none;
   flex-direction: column;
   display: flex;
-  gap: 0.4rem;
+  gap: 0.2rem;
 }
 
 .cat-btn {
-  padding: 0.2rem;
-  border: none;
-  border-radius: 6px;
-  background: none;
-  color: #fff;
-  cursor: pointer;
+  justify-content: start;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.cat-btn:hover {
+  background-color: hsl(var(--muted));
 }
 </style>

@@ -1,10 +1,10 @@
 :root {
-  --background: #14191f;
-  --foreground: #ffffffde;
-  --primary: hsl(211, 99%, 56%);
-  --muted: #a1a1aa;
-  --border: rgba(228, 228, 231, 0.1);
-  --ring: #606084;
+  --background: 213, 22%, 10%;
+  --foreground: 0 0% 98%;
+  --primary: 211, 99%, 56%;
+  --muted: 240 5% 64.9%;
+  --border: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
 }
 
 :root {
@@ -13,8 +13,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: var(--foreground);
-  background-color: var(--background);
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
