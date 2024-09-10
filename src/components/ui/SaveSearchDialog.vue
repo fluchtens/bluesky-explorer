@@ -27,7 +27,7 @@ onMounted(() => {
   <div class="background">
     <form class="modal" @submit="saveSearch">
       <span class="title">Enregistrer la recherche</span>
-      <div class="inputs">
+      <div class="content">
         <div class="input">
           <label for="name">Nom</label>
           <input type="text" id="name" placeholder="Nom" v-model="name" required />
@@ -78,44 +78,27 @@ onMounted(() => {
   font-weight: 600;
 }
 
-.inputs {
+.content {
   flex-direction: column;
   display: flex;
   gap: 0.5rem;
 }
 
-.input {
+.content .input {
   flex-direction: column;
   display: flex;
   gap: 0.3rem;
 }
 
-label {
+.content .input label {
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
 }
 
-input {
-  all: unset;
+.content .input input {
   box-sizing: border-box;
-  padding: 0.5rem 0.75rem;
-  width: 100%;
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.375rem;
-  background-color: transparent;
-  font-size: 0.875rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: color 0.2s;
-}
-
-input::placeholder {
-  color: hsl(var(--muted));
-}
-
-input:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 1px hsl(var(--ring));
+  padding: 1.125rem 0.75rem;
 }
 
 .footer {

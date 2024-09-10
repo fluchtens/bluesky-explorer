@@ -59,26 +59,7 @@ h1 {
 }
 
 input {
-  all: unset;
-  padding: 4px 12px;
   max-width: 400px;
-  width: 100%;
-  height: 30px;
-  border-radius: 0.375rem;
-  border: 1px solid hsl(var(--border));
-  background-color: transparent;
-  font-size: 0.875rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: color 0.2s;
-}
-
-input::placeholder {
-  color: hsl(var(--muted));
-}
-
-input:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 1px hsl(var(--ring));
 }
 
 @media (max-width: 768px) {
