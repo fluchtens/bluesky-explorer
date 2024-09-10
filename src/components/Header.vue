@@ -30,7 +30,7 @@ const resetSearch = () => emit("updateSearch", "");
 <template>
   <header>
     <h1 @click="resetSearch">Bluesky Explorer</h1>
-    <input name="search" type="text" placeholder="Search" :value="props.search" @input="handleSearch" />
+    <input name="search" type="text" placeholder="Rechercher" :value="props.search" @input="handleSearch" />
   </header>
 </template>
 
