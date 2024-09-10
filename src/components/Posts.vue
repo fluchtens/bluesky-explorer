@@ -116,6 +116,7 @@ li {
   font-weight: 300;
   font-size: 0.875rem;
   line-height: 1.25rem;
+  word-break: break-word;
 }
 
 .footer {
