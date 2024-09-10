@@ -39,6 +39,8 @@ const loadNextPostsPage = async () => {
   if (fetchedPosts) {
     posts.value = [...posts.value, ...fetchedPosts.posts];
     cursor.value = fetchedPosts.cursor;
+  } else {
+    cursor.value = "";
   }
 };
 
@@ -52,6 +54,9 @@ const updateSearch = async (newSearch: string) => {
   if (fetchedPosts) {
     posts.value = fetchedPosts.posts;
     cursor.value = fetchedPosts.cursor;
+  } else {
+    posts.value = [];
+    cursor.value = "";
   }
   loading.value = false;
 };
