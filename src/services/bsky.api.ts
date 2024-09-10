@@ -15,7 +15,7 @@ const fetchPosts = async (search?: string, cursor?: string): Promise<PostRespons
     const url = new URL("https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts");
     url.searchParams.append("q", query);
     url.searchParams.append("limit", "30");
-    url.searchParams.append("sort", "top");
+    url.searchParams.append("sort", "latest");
     if (cursor) {
       url.searchParams.append("cursor", cursor);
     }
