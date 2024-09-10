@@ -61,7 +61,6 @@ onUnmounted(() => {
 <style scoped>
 #posts {
   padding: 1rem;
-  flex: 1;
   grid-area: posts;
 }
 

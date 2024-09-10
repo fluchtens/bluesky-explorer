@@ -51,10 +51,10 @@ onMounted(() => {
   bottom: 0;
   left: 0;
   z-index: 50;
-  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .modal {
@@ -104,5 +104,9 @@ onMounted(() => {
   margin-left: auto;
   display: flex;
   gap: 0.3rem;
+}
+
+.footer button {
+  padding: 1.125rem 0.75rem;
 }
 </style>
