@@ -9,6 +9,7 @@ import { Post } from "./types/post.type";
 
 const search = ref<string>("");
 const posts = ref<Post[]>([]);
+const cursor = ref<string>("");
 const favorites = ref<Post[]>([]);
 const loading = ref<boolean>(true);
 
@@ -16,10 +17,10 @@ onMounted(async () => {
   const params = new URLSearchParams(window.location.search);
   search.value = params.get("search") || "";
 
-  if (search.value) {
-    posts.value = await fetchPosts(search.value);
-  } else {
-    posts.value = await fetchPosts();
+  const fetchedPosts = await fetchPosts(search.value);
+  if (fetchedPosts) {
+    posts.value = fetchedPosts.posts;
+    cursor.value = fetchedPosts.cursor;
   }
   loading.value = false;
 
@@ -33,16 +34,34 @@ const enableLoading = () => {
   loading.value = true;
 };
 
-const handleSearchUpdate = async (newSearch: string) => {
+const loadNextPostsPage = async () => {
+  const fetchedPosts = await fetchPosts(search.value, cursor.value);
+  if (fetchedPosts) {
+    posts.value = [...posts.value, ...fetchedPosts.posts];
+    cursor.value = fetchedPosts.cursor;
+  } else {
+    cursor.value = "";
+  }
+};
+
+const updateSearch = async (newSearch: string) => {
   const params = new URLSearchParams(window.location.search);
   params.set("search", newSearch);
   window.history.pushState({}, "", `${window.location.pathname}?${params}`);
   search.value = newSearch;
-  posts.value = await fetchPosts(newSearch);
+  cursor.value = "";
+  const fetchedPosts = await fetchPosts(newSearch);
+  if (fetchedPosts) {
+    posts.value = fetchedPosts.posts;
+    cursor.value = fetchedPosts.cursor;
+  } else {
+    posts.value = [];
+    cursor.value = "";
+  }
   loading.value = false;
 };
 
-const handleFavoritePost = (post: Post) => {
+const toggleFavorite = (post: Post) => {
   const postIndex = favorites.value.findIndex((p) => p.cid === post.cid);
   const storage = localStorage.getItem("favorites");
   let savedPosts: Post[] = [];
@@ -74,11 +93,11 @@ const resetFavorites = () => {
 </script>
 
 <template>
-  <Header :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
+  <Header :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
   <div class="container">
-    <Searches :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
+    <Searches :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
     <Suspense>
-      <Posts :posts="posts" :loading="loading" @onFavoritePostChange="handleFavoritePost" />
+      <Posts :posts="posts" :favorites="favorites" :loading="loading" @toggleFavorite="toggleFavorite" @loadNextPostsPage="loadNextPostsPage" />
     </Suspense>
     <Favorites :favorites="favorites" @resetFavorites="resetFavorites" />
   </div>
@@ -88,5 +107,13 @@ const resetFavorites = () => {
 .container {
   display: grid;
   grid-template-columns: 180px 1fr 180px;
+  grid-template-areas: "searches posts favorites";
+}
+
+@media (max-width: 640px) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-areas: "searches" "favorites" "posts";
+  }
 }
 </style>

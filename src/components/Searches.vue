@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { Search } from "../types/search.type";
+import Button from "./ui/Button.vue";
+import SaveSearchDialog from "./ui/SaveSearchDialog.vue";
 
-const props = defineProps<{
-  search: string;
-}>();
-
+const dialog = ref<boolean>(false);
 const searches = ref<Search[]>([
   { name: "Intelligence artificielle", query: "intelligence artificielle" },
   { name: "Véhicules électriques", query: "véhicules électriques" },
@@ -14,31 +13,31 @@ const searches = ref<Search[]>([
   { name: "JO 2024", query: "jo 2024" },
   { name: "Réforme travail", query: "Réforme travail" },
 ]);
+const props = defineProps<{ search: string }>();
+const emit = defineEmits(["enableLoading", "updateSearch"]);
 
-const emit = defineEmits<{
-  enableLoading: [];
-  onSearchChange: [newSearch: string];
-}>();
-
-const handleSearch = (search: Search) => {
-  emit("enableLoading");
-  emit("onSearchChange", search.query);
+const toggleDialog = () => {
+  dialog.value = !dialog.value;
 };
 
-const handleSaveSearch = () => {
-  const name = prompt("Nom de la recherche");
-  if (name) {
-    const search: Search = { name: name, query: props.search };
-    searches.value.push(search);
+const saveSearch = (name: string, query: string) => {
+  dialog.value = false;
 
-    const searcheStorage = localStorage.getItem("searches");
-    let savedSearches: Search[] = [];
-    if (searcheStorage) {
-      savedSearches = JSON.parse(searcheStorage);
-    }
-    savedSearches.push(search);
-    localStorage.setItem("searches", JSON.stringify(savedSearches));
+  const search: Search = { name: name, query: query };
+  searches.value.push(search);
+
+  const searcheStorage = localStorage.getItem("searches");
+  let savedSearches: Search[] = [];
+  if (searcheStorage) {
+    savedSearches = JSON.parse(searcheStorage);
   }
+  savedSearches.push(search);
+  localStorage.setItem("searches", JSON.stringify(savedSearches));
+};
+
+const updateSearch = (search: Search) => {
+  emit("enableLoading");
+  emit("updateSearch", search.query);
 };
 
 onMounted(() => {
@@ -54,19 +53,21 @@ onMounted(() => {
   <nav id="searches">
     <div>
       <h2>Recherches</h2>
-      <button class="save-btn" @click="handleSaveSearch">+ Enregistrer la recherche</button>
+      <Button theme="primary" :click="toggleDialog">Enregistrer</Button>
       <ul>
         <li v-for="(search, index) in searches" :key="index">
-          <button class="cat-btn" @click="() => handleSearch(search)">{{ search.name }}</button>
+          <Button class="cat-btn" theme="ghost" :click="() => updateSearch(search)">{{ search.name }}</Button>
         </li>
       </ul>
     </div>
+    <SaveSearchDialog v-if="dialog" :search="props.search" @toggleDialog="toggleDialog" @saveSearch="saveSearch" />
   </nav>
 </template>
 
 <style scoped>
-nav {
+#searches {
   padding: 1rem;
+  grid-area: searches;
 }
 
 div {
@@ -75,28 +76,15 @@ div {
   gap: 0.5rem;
 }
 
-.save-btn {
-  padding: 0.2rem;
-  border: none;
-  border-radius: 6px;
-  background: #208bfe;
-  color: #fff;
-  cursor: pointer;
-}
-
 ul {
   list-style: none;
   flex-direction: column;
   display: flex;
-  gap: 0.4rem;
+  gap: 0.2rem;
 }
 
 .cat-btn {
-  padding: 0.2rem;
-  border: none;
-  border-radius: 6px;
-  background: none;
-  color: #fff;
-  cursor: pointer;
+  justify-content: start;
+  font-size: 0.75rem;
 }
 </style>

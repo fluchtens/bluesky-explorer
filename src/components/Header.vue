@@ -1,4 +1,7 @@
 <script setup lang="ts">
+const props = defineProps<{ search: string }>();
+const emit = defineEmits(["enableLoading", "updateSearch"]);
+
 function debounce(cb: (value: string) => void, delay: number): (value: string) => void {
   let timeoutId: ReturnType<typeof setTimeout>;
 
@@ -11,18 +14,8 @@ function debounce(cb: (value: string) => void, delay: number): (value: string) =
     }, delay);
   };
 }
-
-const props = defineProps<{
-  search: string;
-}>();
-
-const emit = defineEmits<{
-  enableLoading: [];
-  onSearchChange: [newSearch: string];
-}>();
-
 const debouncedSearch = debounce((value: string) => {
-  emit("onSearchChange", value);
+  emit("updateSearch", value);
 }, 500);
 
 const handleSearch = (event: Event) => {
@@ -30,15 +23,14 @@ const handleSearch = (event: Event) => {
   const target = event.target as HTMLInputElement;
   debouncedSearch(target.value);
 };
+
+const resetSearch = () => emit("updateSearch", "");
 </script>
 
 <template>
   <header>
-    <h1>Bluesky Explorer</h1>
-    <div>
-      🔎
-      <input type="text" :value="props.search" @input="handleSearch" />
-    </div>
+    <h1 @click="resetSearch">Bluesky Explorer</h1>
+    <input name="search" type="text" placeholder="Search" :value="props.search" @input="handleSearch" />
   </header>
 </template>
 
@@ -52,11 +44,19 @@ header {
 
 h1 {
   font-size: 1.5rem;
+  line-height: 2rem;
   font-weight: 700;
+  cursor: pointer;
 }
 
 input {
-  width: 40vw;
-  min-width: 300px;
+  max-width: 400px;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
 }
 </style>

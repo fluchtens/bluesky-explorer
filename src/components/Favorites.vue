@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import * as XLSX from "xlsx";
 import { Post } from "../types/post.type";
+import Button from "./ui/Button.vue";
 
-const props = defineProps<{
-  favorites: Post[];
-}>();
+const props = defineProps<{ favorites: Post[] }>();
+const emit = defineEmits(["resetFavorites"]);
 
-const emit = defineEmits<{
-  resetFavorites: [];
-}>();
-
-const handleReset = () => {
-  emit("resetFavorites");
-};
+const resetFavorites = () => emit("resetFavorites");
 
 const handleExport = () => {
   const exportData = props.favorites.map((post: Post) => ({
@@ -34,28 +28,35 @@ const handleExport = () => {
 </script>
 
 <template>
-  <div id="favs">
+  <div id="favorites">
     <h2>Export</h2>
     <p v-if="!props.favorites.length">Pas encore de favoris</p>
     <div v-else>
       <p>{{ props.favorites.length }} favori(s)</p>
-      <button @click="handleReset">Réinitialiser</button>
-      <button @click="handleExport">Exporter</button>
+      <div class="buttons">
+        <Button theme="ghost" :click="resetFavorites">Réinitialiser</Button>
+        <Button theme="primary" :click="handleExport">Exporter</Button>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-#favs {
+#favorites {
   padding: 1rem;
+  grid-area: favorites;
 }
 
-button {
-  background-color: #208bfe;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  cursor: pointer;
-  padding: 0.2rem;
+p {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 300;
+}
+
+.buttons {
+  margin-top: 0.5rem;
+  flex-direction: column;
+  display: flex;
+  gap: 0.25rem;
 }
 </style>
