@@ -14,7 +14,7 @@ const searches = ref<Search[]>([
   { name: "Réforme travail", query: "Réforme travail" },
 ]);
 const props = defineProps<{ search: string }>();
-const emit = defineEmits(["enableLoading", "onSearchChange"]);
+const emit = defineEmits(["enableLoading", "updateSearch"]);
 
 const toggleDialog = () => {
   dialog.value = !dialog.value;
@@ -37,7 +37,7 @@ const saveSearch = (name: string, query: string) => {
 
 const updateSearch = (search: Search) => {
   emit("enableLoading");
-  emit("onSearchChange", search.query);
+  emit("updateSearch", search.query);
 };
 
 onMounted(() => {

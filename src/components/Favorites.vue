@@ -3,17 +3,10 @@ import * as XLSX from "xlsx";
 import { Post } from "../types/post.type";
 import Button from "./ui/Button.vue";
 
-const props = defineProps<{
-  favorites: Post[];
-}>();
+const props = defineProps<{ favorites: Post[] }>();
+const emit = defineEmits(["resetFavorites"]);
 
-const emit = defineEmits<{
-  resetFavorites: [];
-}>();
-
-const handleReset = () => {
-  emit("resetFavorites");
-};
+const resetFavorites = () => emit("resetFavorites");
 
 const handleExport = () => {
   const exportData = props.favorites.map((post: Post) => ({
@@ -41,7 +34,7 @@ const handleExport = () => {
     <div v-else>
       <p>{{ props.favorites.length }} favori(s)</p>
       <div class="buttons">
-        <Button theme="primary" :click="handleReset">Réinitialiser</Button>
+        <Button theme="primary" :click="resetFavorites">Réinitialiser</Button>
         <Button theme="ghost" :click="handleExport">Exporter</Button>
       </div>
     </div>
@@ -52,6 +45,12 @@ const handleExport = () => {
 #favorites {
   padding: 1rem;
   grid-area: favorites;
+}
+
+p {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 300;
 }
 
 .buttons {

@@ -7,9 +7,7 @@ const query = defineModel("query");
 const props = defineProps<{ search: string }>();
 const emit = defineEmits(["saveSearch", "toggleDialog"]);
 
-const toggleDialog = () => {
-  emit("toggleDialog");
-};
+const toggleDialog = () => emit("toggleDialog");
 
 const saveSearch = (e: Event) => {
   e.preventDefault();

@@ -9,42 +9,28 @@ import Loader from "./ui/Loader.vue";
 dayjs.extend(relativeTime);
 dayjs.locale(locale);
 
-const props = defineProps<{
-  posts: Post[];
-  favorites: Post[];
-  loading: boolean;
-}>();
+const props = defineProps<{ posts: Post[]; favorites: Post[]; loading: boolean }>();
+const emit = defineEmits(["toggleFavorite", "loadNextPostsPage"]);
 
-const emit = defineEmits<{
-  onFavoritePostChange: [post: Post];
-  onPageChange: [];
-}>();
+const toggleFavorite = (post: Post) => emit("toggleFavorite", post);
 
-const handleFavorite = (post: Post) => {
-  emit("onFavoritePostChange", post);
-};
+const isFavorite = (post: Post) => props.favorites.some((p) => p.cid === post.cid);
 
-const getRelativeDate = (date: string) => {
-  return dayjs().to(dayjs(date));
-};
+const getRelativeDate = (date: string) => dayjs().to(dayjs(date));
 
-const isFavorite = (post: Post) => {
-  return props.favorites.some((p) => p.cid === post.cid);
-};
-
-const handleScroll = () => {
+const loadNextPostsPage = () => {
   const bottom = document.documentElement.scrollHeight === window.innerHeight + window.scrollY;
   if (bottom) {
-    emit("onPageChange");
+    emit("loadNextPostsPage");
   }
 };
 
 onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
+  window.addEventListener("scroll", loadNextPostsPage);
 });
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
+  window.removeEventListener("scroll", loadNextPostsPage);
 });
 </script>
 
@@ -61,7 +47,7 @@ onUnmounted(() => {
           </div>
           <p class="content">{{ post.record.text }}</p>
           <div class="footer">
-            <button @click="() => handleFavorite(post)">
+            <button @click="() => toggleFavorite(post)">
               <img :src="!isFavorite(post) ? '/fav.png' : '/unfav.png'" alt="Like" />
             </button>
             <span>{{ getRelativeDate(post.record.createdAt) }}</span>

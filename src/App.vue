@@ -34,7 +34,7 @@ const enableLoading = () => {
   loading.value = true;
 };
 
-const handlePagination = async () => {
+const loadNextPostsPage = async () => {
   const fetchedPosts = await fetchPosts(search.value, cursor.value);
   if (fetchedPosts) {
     posts.value = [...posts.value, ...fetchedPosts.posts];
@@ -42,7 +42,7 @@ const handlePagination = async () => {
   }
 };
 
-const handleSearchUpdate = async (newSearch: string) => {
+const updateSearch = async (newSearch: string) => {
   const params = new URLSearchParams(window.location.search);
   params.set("search", newSearch);
   window.history.pushState({}, "", `${window.location.pathname}?${params}`);
@@ -56,7 +56,7 @@ const handleSearchUpdate = async (newSearch: string) => {
   loading.value = false;
 };
 
-const handleFavoritePost = (post: Post) => {
+const toggleFavorite = (post: Post) => {
   const postIndex = favorites.value.findIndex((p) => p.cid === post.cid);
   const storage = localStorage.getItem("favorites");
   let savedPosts: Post[] = [];
@@ -88,11 +88,11 @@ const resetFavorites = () => {
 </script>
 
 <template>
-  <Header :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
+  <Header :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
   <div class="container">
-    <Searches :search="search" @enableLoading="enableLoading" @onSearchChange="handleSearchUpdate" />
+    <Searches :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
     <Suspense>
-      <Posts :posts="posts" :favorites="favorites" :loading="loading" @onFavoritePostChange="handleFavoritePost" @onPageChange="handlePagination" />
+      <Posts :posts="posts" :favorites="favorites" :loading="loading" @toggleFavorite="toggleFavorite" @loadNextPostsPage="loadNextPostsPage" />
     </Suspense>
     <Favorites :favorites="favorites" @resetFavorites="resetFavorites" />
   </div>
