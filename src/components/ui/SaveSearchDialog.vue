@@ -107,6 +107,12 @@ onMounted(() => {
 }
 
 .footer button {
-  padding: 1.125rem 0.75rem;
+  padding: 1.125rem 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .modal {
+    max-width: 80vw;
+  }
 }
 </style>

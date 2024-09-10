@@ -10,6 +10,7 @@ import { Post } from "./types/post.type";
 const search = ref<string>("");
 const posts = ref<Post[]>([]);
 const cursor = ref<string>("");
+const allPageLoaded = ref<boolean>(false);
 const favorites = ref<Post[]>([]);
 const loading = ref<boolean>(true);
 
@@ -21,6 +22,9 @@ onMounted(async () => {
   if (fetchedPosts) {
     posts.value = fetchedPosts.posts;
     cursor.value = fetchedPosts.cursor;
+    if (!fetchedPosts.cursor) {
+      allPageLoaded.value = true;
+    }
   }
   loading.value = false;
 
@@ -35,12 +39,17 @@ const enableLoading = () => {
 };
 
 const loadNextPostsPage = async () => {
+  if (allPageLoaded.value) {
+    return;
+  }
+
   const fetchedPosts = await fetchPosts(search.value, cursor.value);
   if (fetchedPosts) {
     posts.value = [...posts.value, ...fetchedPosts.posts];
     cursor.value = fetchedPosts.cursor;
-  } else {
-    cursor.value = "";
+    if (!fetchedPosts.cursor) {
+      allPageLoaded.value = true;
+    }
   }
 };
 
@@ -48,15 +57,19 @@ const updateSearch = async (newSearch: string) => {
   const params = new URLSearchParams(window.location.search);
   params.set("search", newSearch);
   window.history.pushState({}, "", `${window.location.pathname}?${params}`);
+
   search.value = newSearch;
+  posts.value = [];
   cursor.value = "";
+  allPageLoaded.value = false;
+
   const fetchedPosts = await fetchPosts(newSearch);
   if (fetchedPosts) {
     posts.value = fetchedPosts.posts;
     cursor.value = fetchedPosts.cursor;
-  } else {
-    posts.value = [];
-    cursor.value = "";
+    if (!fetchedPosts.cursor) {
+      allPageLoaded.value = true;
+    }
   }
   loading.value = false;
 };
