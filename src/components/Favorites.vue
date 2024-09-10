@@ -34,8 +34,8 @@ const handleExport = () => {
     <div v-else>
       <p>{{ props.favorites.length }} favori(s)</p>
       <div class="buttons">
-        <Button theme="primary" :click="resetFavorites">Réinitialiser</Button>
-        <Button theme="ghost" :click="handleExport">Exporter</Button>
+        <Button theme="ghost" :click="resetFavorites">Réinitialiser</Button>
+        <Button theme="primary" :click="handleExport">Exporter</Button>
       </div>
     </div>
   </div>

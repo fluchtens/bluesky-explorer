@@ -15,6 +15,7 @@ const props = defineProps<{
 button {
   all: unset;
   box-sizing: border-box;
+  overflow: hidden;
   padding: 1rem 0.5rem;
   height: 1.125rem;
   width: 100%;
