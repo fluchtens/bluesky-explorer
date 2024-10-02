@@ -34,10 +34,6 @@ onMounted(async () => {
   }
 });
 
-const enableLoading = () => {
-  loading.value = true;
-};
-
 const loadNextPostsPage = async () => {
   if (allPageLoaded.value) {
     return;
@@ -54,6 +50,8 @@ const loadNextPostsPage = async () => {
 };
 
 const updateSearch = async (newSearch: string) => {
+  loading.value = true;
+
   const params = new URLSearchParams(window.location.search);
   params.set("search", newSearch);
   window.history.pushState({}, "", `${window.location.pathname}?${params}`);
@@ -106,9 +104,9 @@ const resetFavorites = () => {
 </script>
 
 <template>
-  <Header :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
+  <Header :search="search" @updateSearch="updateSearch" />
   <div class="container">
-    <Searches :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
+    <Searches :search="search" @updateSearch="updateSearch" />
     <Posts :posts="posts" :favorites="favorites" :loading="loading" @toggleFavorite="toggleFavorite" @loadNextPostsPage="loadNextPostsPage" />
     <Favorites :favorites="favorites" @resetFavorites="resetFavorites" />
   </div>
