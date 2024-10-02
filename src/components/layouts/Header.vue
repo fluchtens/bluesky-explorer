@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{ search: string }>();
-const emit = defineEmits(["enableLoading", "updateSearch"]);
+const emit = defineEmits(["updateSearch"]);
 
 function debounce(cb: (value: string) => void, delay: number): (value: string) => void {
   let timeoutId: ReturnType<typeof setTimeout>;
@@ -19,7 +19,6 @@ const debouncedSearch = debounce((value: string) => {
 }, 500);
 
 const handleSearch = (event: Event) => {
-  emit("enableLoading");
   const target = event.target as HTMLInputElement;
   debouncedSearch(target.value);
 };

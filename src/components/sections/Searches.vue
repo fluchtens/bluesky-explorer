@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { Search } from "../types/search.type";
-import Button from "./ui/Button.vue";
-import SaveSearchDialog from "./ui/SaveSearchDialog.vue";
+import { Search } from "../../types/search.type";
+import Button from "../ui/Button.vue";
+import SaveSearchDialog from "../ui/SaveSearchDialog.vue";
 
 const dialog = ref<boolean>(false);
 const searches = ref<Search[]>([
@@ -14,7 +14,7 @@ const searches = ref<Search[]>([
   { name: "Réforme travail", query: "Réforme travail" },
 ]);
 const props = defineProps<{ search: string }>();
-const emit = defineEmits(["enableLoading", "updateSearch"]);
+const emit = defineEmits(["updateSearch"]);
 
 const toggleDialog = () => {
   dialog.value = !dialog.value;
@@ -36,7 +36,6 @@ const saveSearch = (name: string, query: string) => {
 };
 
 const updateSearch = (search: Search) => {
-  emit("enableLoading");
   emit("updateSearch", search.query);
 };
 

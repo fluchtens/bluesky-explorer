@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import Favorites from "./components/Favorites.vue";
-import Header from "./components/Header.vue";
-import Posts from "./components/Posts.vue";
-import Searches from "./components/Searches.vue";
+import Header from "./components/layouts/Header.vue";
+import Favorites from "./components/sections/Favorites.vue";
+import Posts from "./components/sections/Posts.vue";
+import Searches from "./components/sections/Searches.vue";
 import { fetchPosts } from "./services/bsky.api";
 import { Post } from "./types/post.type";
 
@@ -34,10 +34,6 @@ onMounted(async () => {
   }
 });
 
-const enableLoading = () => {
-  loading.value = true;
-};
-
 const loadNextPostsPage = async () => {
   if (allPageLoaded.value) {
     return;
@@ -54,9 +50,17 @@ const loadNextPostsPage = async () => {
 };
 
 const updateSearch = async (newSearch: string) => {
+  loading.value = true;
+
   const params = new URLSearchParams(window.location.search);
-  params.set("search", newSearch);
-  window.history.pushState({}, "", `${window.location.pathname}?${params}`);
+  if (newSearch === "") {
+    params.delete("search");
+  } else {
+    params.set("search", newSearch);
+  }
+  const pathname = window.location.pathname;
+  const updatedUrl = params.toString() ? `${pathname}?${params}` : pathname;
+  window.history.pushState({}, "", updatedUrl);
 
   search.value = newSearch;
   posts.value = [];
@@ -106,12 +110,10 @@ const resetFavorites = () => {
 </script>
 
 <template>
-  <Header :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
+  <Header :search="search" @updateSearch="updateSearch" />
   <div class="container">
-    <Searches :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
-    <Suspense>
-      <Posts :posts="posts" :favorites="favorites" :loading="loading" @toggleFavorite="toggleFavorite" @loadNextPostsPage="loadNextPostsPage" />
-    </Suspense>
+    <Searches :search="search" @updateSearch="updateSearch" />
+    <Posts :posts="posts" :favorites="favorites" :loading="loading" @toggleFavorite="toggleFavorite" @loadNextPostsPage="loadNextPostsPage" />
     <Favorites :favorites="favorites" @resetFavorites="resetFavorites" />
   </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as XLSX from "xlsx";
-import { Post } from "../types/post.type";
-import Button from "./ui/Button.vue";
+import { Post } from "../../types/post.type";
+import Button from "../ui/Button.vue";
 
 const props = defineProps<{ favorites: Post[] }>();
 const emit = defineEmits(["resetFavorites"]);
