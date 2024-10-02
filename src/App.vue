@@ -53,8 +53,14 @@ const updateSearch = async (newSearch: string) => {
   loading.value = true;
 
   const params = new URLSearchParams(window.location.search);
-  params.set("search", newSearch);
-  window.history.pushState({}, "", `${window.location.pathname}?${params}`);
+  if (newSearch === "") {
+    params.delete("search");
+  } else {
+    params.set("search", newSearch);
+  }
+  const pathname = window.location.pathname;
+  const updatedUrl = params.toString() ? `${pathname}?${params}` : pathname;
+  window.history.pushState({}, "", updatedUrl);
 
   search.value = newSearch;
   posts.value = [];
