@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { Search } from "../types/search.type";
-import Button from "./ui/Button.vue";
-import SaveSearchDialog from "./ui/SaveSearchDialog.vue";
+import { Search } from "../../types/search.type";
+import Button from "../ui/Button.vue";
+import SaveSearchDialog from "../ui/SaveSearchDialog.vue";
 
 const dialog = ref<boolean>(false);
 const searches = ref<Search[]>([

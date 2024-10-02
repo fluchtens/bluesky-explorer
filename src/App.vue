@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import Favorites from "./components/Favorites.vue";
-import Header from "./components/Header.vue";
-import Posts from "./components/Posts.vue";
-import Searches from "./components/Searches.vue";
+import Header from "./components/layouts/Header.vue";
+import Favorites from "./components/sections/Favorites.vue";
+import Posts from "./components/sections/Posts.vue";
+import Searches from "./components/sections/Searches.vue";
 import { fetchPosts } from "./services/bsky.api";
 import { Post } from "./types/post.type";
 
