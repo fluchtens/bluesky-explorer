@@ -109,9 +109,7 @@ const resetFavorites = () => {
   <Header :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
   <div class="container">
     <Searches :search="search" @enableLoading="enableLoading" @updateSearch="updateSearch" />
-    <Suspense>
-      <Posts :posts="posts" :favorites="favorites" :loading="loading" @toggleFavorite="toggleFavorite" @loadNextPostsPage="loadNextPostsPage" />
-    </Suspense>
+    <Posts :posts="posts" :favorites="favorites" :loading="loading" @toggleFavorite="toggleFavorite" @loadNextPostsPage="loadNextPostsPage" />
     <Favorites :favorites="favorites" @resetFavorites="resetFavorites" />
   </div>
 </template>
